@@ -2,13 +2,17 @@ import { Button } from "@/components/button";
 import { Calendar } from "@/components/calendar";
 import { GuestEmail } from "@/components/email";
 import { Input } from "@/components/input";
+import Loading from "@/components/loading";
 import { Modal } from "@/components/modal";
+import { tripServer } from "@/server/trip-server";
+import { tripStorage } from "@/storage/trip";
 import { colors } from "@/styles/colors";
 import { calendarUtils, DatesSelected } from "@/utils/calendarUtils";
 import { validateInput } from "@/utils/validateInput";
 import dayjs from "dayjs";
+import { router } from "expo-router";
 import { ArrowRight, AtSign, Calendar as IconCalendar, MapPin, Settings2, UserRoundPlus } from "lucide-react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert, Image, Keyboard, Text, View } from "react-native";
 import { DateData } from "react-native-calendars";
 
@@ -24,6 +28,11 @@ enum MODAL {
 }
 
 export default function Index(){
+
+	 // LOADING
+	 const [isCreatingTrip, setIsCreatingTrip] = useState(false)
+	 const [isGettingTrip, setIsGettingTrip] = useState(true)
+
 	//DATA
 	const [stepForm, setStepForm]= useState(StepForm.TRIP_DETAILS)
 	const [selectedDates, setSelectedDates] = useState({} as DatesSelected)
@@ -57,6 +66,17 @@ export default function Index(){
 		if(stepForm === StepForm.TRIP_DETAILS){
 			return setStepForm(StepForm.ADD_EMAIL)
 		}
+
+		Alert.alert( "New Trip","Confirm trip?", [
+      {
+        text: "No",
+        style: "cancel",
+      },
+      {
+        text: "Yes",
+        onPress: createTrip,
+      },
+    ])
 	}
 
 
@@ -78,7 +98,7 @@ export default function Index(){
 
 	function handleAddEmail() {
     if (!validateInput.email(emailToInvite)) {
-      return Alert.alert("Convidado", "E-mail inválido!")
+      return Alert.alert("Guest","Invalid email!")
     }
 
     const emailAlreadyExists = emailsToInvite.find(
@@ -86,14 +106,74 @@ export default function Index(){
     )
 
     if (emailAlreadyExists) {
-      return Alert.alert("Convidado", "E-mail já foi adicionado!")
+      return Alert.alert("Guest","Email has already been added!")
     }
 
     setEmailsToInvite((prevState) => [...prevState, emailToInvite])
     setEmailToInvite("")
   }
 
+	async function saveTrip(tripId: string) {
+    try {
+      await tripStorage.save(tripId)
+      router.navigate("/trip/" + tripId)
+    } catch (error) {
+      Alert.alert(
+        "Save Trip",
+  			"Could not save the trip ID on the device."
+      )
+      console.log(error)
+    }
+  }
 
+  async function createTrip() {
+    try {
+      setIsCreatingTrip(true)
+
+      const newTrip = await tripServer.create({
+        destination,
+        starts_at: dayjs(selectedDates.startsAt?.dateString).toString(),
+        ends_at: dayjs(selectedDates.endsAt?.dateString).toString(),
+        emails_to_invite: emailsToInvite,
+      })
+
+      Alert.alert("New Trip","Trip created successfully!", [
+        {
+          text: "OK. Continue.",
+          onPress: () => saveTrip(newTrip.tripId),
+        },
+      ])
+    } catch (error) {
+      console.log(error)
+      setIsCreatingTrip(false)
+    }
+  }
+	async function getTrip() {
+    try {
+      const tripID = await tripStorage.get()
+
+      if (!tripID) {
+        return setIsGettingTrip(false)
+      }
+
+      const trip = await tripServer.getById(tripID)
+
+      if (trip) {
+        return router.navigate("/trip/" + trip.id)
+      }
+    } catch (error) {
+      setIsGettingTrip(false)
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    getTrip()
+  }, [])
+
+  if (isGettingTrip) {
+    return <Loading />
+  }
 
 	return(
 		<View className="flex-1 justify-center items-center px-5 gap-6">
@@ -136,7 +216,7 @@ export default function Index(){
 						value={selectedDates.formatDatesInText}
 						/>
 				</Input>
-				{stepForm === StepForm.ADD_EMAIL && 
+				{stepForm === StepForm.ADD_EMAIL && (
 					<>
 					<View className="border-b border-zinc-800 py-6">
 						<Button variant="secondary" onPress={()=>setStepForm(StepForm.TRIP_DETAILS)}>
@@ -148,26 +228,27 @@ export default function Index(){
 					<Input>
 						<UserRoundPlus color={colors.zinc[400]} size={20} />
 						<Input.Field placeholder="Who will be on the trip?" 
-						autoCorrect={false}
-						value={
-							emailToInvite.length > 0 
-							 ? `${emailsToInvite.length} guest(s) invited`
+              autoCorrect={false}
+                value={
+                  emailsToInvite.length > 0
+                    ? `${emailsToInvite.length} guest(s) invited`
                     : ""
-						}
-						onPress={() => {
-							Keyboard.dismiss()
-							setShowModal(MODAL.GUESTS)
-						}}
-						showSoftInputOnFocus={false}
-						/>
-					</Input>
-					</>
-				}
+                }
+              onPress={() => {
+                Keyboard.dismiss()
+                setShowModal(MODAL.GUESTS)
+              }}
+              showSoftInputOnFocus={false}
+            />
+          </Input>
+        </>
+      )}
 
-				<Button onPress={handleNextStepForm}>
+				<Button onPress={handleNextStepForm} isLoading={isCreatingTrip}>
 					<Button.Title>
-						{ stepForm === StepForm.TRIP_DETAILS ?
-						"Continue" : " Confirm Trip"
+						{ stepForm === StepForm.TRIP_DETAILS 
+            ? "Continue" 
+            : " Confirm Trip"
 						}
 						</Button.Title>
 					<ArrowRight className={colors.lime[950]} size={20} />
