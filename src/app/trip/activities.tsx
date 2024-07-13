@@ -171,7 +171,7 @@ export function Activities({ tripDetails }: Props) {
           <Input variant="secondary">
             <Tag color={colors.zinc[400]} size={20} />
             <Input.Field
-              placeholder="which ativities?"
+              placeholder="Which ativities?"
               onChangeText={setActivityTitle}
               value={activityTitle}
             />
