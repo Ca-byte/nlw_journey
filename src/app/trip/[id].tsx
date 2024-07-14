@@ -332,8 +332,8 @@ export default function Trip() {
             </Text>
             on the dates of{" "}
             <Text className="font-semibold text-zinc-100">
-              {dayjs(tripDetails.starts_at).date()} a{" "}
-              {dayjs(tripDetails.ends_at).date()} de{" "}
+              {dayjs(tripDetails.starts_at).date()} to{" "}
+              {dayjs(tripDetails.ends_at).date()} of {" "}
               {dayjs(tripDetails.ends_at).format("MMMM")}. {"\n\n"}
             </Text>
               To confirm your presence on the trip, please fill in the details below:

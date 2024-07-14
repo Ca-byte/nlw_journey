@@ -38,7 +38,7 @@ export function Details({ tripId }: { tripId: string }) {
   async function handleCreateTripLink() {
     try {
       if (!linkTitle.trim()) {
-        return Alert.alert("Link", "Informe um título para o link.")
+        return Alert.alert("Link", "Provide a title for the link.")
       }
 
       if (!validateInput.url(linkURL.trim())) {
@@ -146,7 +146,7 @@ export function Details({ tripId }: { tripId: string }) {
         </View>
 
         <Button isLoading={isCreatingLinkTrip} onPress={handleCreateTripLink}>
-          <Button.Title>Salve link</Button.Title>
+          <Button.Title>Save link</Button.Title>
         </Button>
       </Modal>
     </View>
