@@ -26,12 +26,15 @@ This project was developed during NLW Journey, held from July 9th to 12th, 2024,
 
 ## Features
 
-- **Credential Code Generation:** Attendees can generate a unique credential code for event registration.
-- **Event Registration:** Register for upcoming events and manage registration details.
-- **Photo Upload:** Upload a personalized photo to associate with your registration.
-- **QR Code Check-In:** Use QR codes for hassle-free event check-in.
+- **Travel Date and Destination Selection:** Users can input their travel destination and select travel dates using an intuitive calendar interface. The calendar includes rules to prevent choosing past dates or dates that are already booked.
+- **Review and Edit Selections:** Users can review their travel choices and make edits if necessary before proceeding.
+- **Friend Invitations:** Invite friends to join the trip via email. The system ensures no duplicate or invalid emails are sent. Users can see how many friends have been invited.
+- **Activity Creation:** Users can create and schedule daily activities for each day of the trip, complete with timestamps. Completed activities can be marked with a check icon.
+- **Important Links:** Add and manage important links related to the trip, such as accommodation details or tickets.
+- **Guest Confirmation:** Guests receive an invitation with all trip details and can confirm their presence.
 
 This project is developed using React Native and leverages various Expo libraries and tools for a seamless mobile experience.
+
 
 ## Server App
 
@@ -45,11 +48,12 @@ For information about the server app component, please refer to the [Server App 
 - [Expo](https://expo.dev/)
 - [Axios](https://axios-http.com/docs/intro)
 - [React Navigation](https://reactnavigation.org/)
-- [Expo Image Picker](https://docs.expo.dev/versions/latest/sdk/imagepicker/)
-- [Expo QRCode SVG](https://docs.expo.dev/versions/latest/sdk/qrcode/)
-- [Expo System UI](https://docs.expo.dev/versions/latest/sdk/system-ui/)
 - [Tailwind CSS](https://tailwindcss.com/)
-- [Zustand](https://zustand.surge.sh/)
+- [Day.js](https://day.js.org/)
+- [Zod](https://zod.dev/)
+- [Expo Status Bar](https://docs.expo.dev/versions/latest/sdk/status-bar/)
+- [React Native Reanimated](https://docs.swmansion.com/react-native-reanimated/)
+- [React Native Calendars](https://github.com/wix/react-native-calendars)
 
 ---
 
