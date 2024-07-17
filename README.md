@@ -1,7 +1,6 @@
 <div align="center" id="top">
 
-![project cover](/mobile/assets/images/project-cover.png)
-![project screens](/mobile/assets/images/project-screens.png)
+![project screens new trip](mobile-app/assets/images/project-cover-new-trip.png)
 
 </div>
 
