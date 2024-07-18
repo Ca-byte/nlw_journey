@@ -1,6 +1,15 @@
-<div align="center" id="top">
+<div align="center" id="top" style="display: flex">
+  <img 
+    src="mobile-app/assets/images/project-cover-new-trip.png" 
+    alt="project screens new trip" 
+    style="width: 65%;" 
+  />
+  <img 
+    src="mobile-app/assets/images/project-cover-activities.png" 
+    alt="project screens activities" 
+  />
+</div>
 
-![project screens new trip](mobile-app/assets/images/project-cover-new-trip.png)
 
 </div>
 
