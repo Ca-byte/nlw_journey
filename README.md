@@ -1,15 +1,12 @@
-<div id="top" style="display: flex">
+<div align="center" id="top">
   <img 
     src="mobile-app/assets/images/project-cover-new-trip.png" 
     alt="project screens new trip" 
-    style="width: 65%;" 
   />
   <img 
     src="mobile-app/assets/images/project-cover-activities.png" 
     alt="project screens activities" 
   />
-</div>
-<div>
   <img 
     src="mobile-app/assets/images/project-cover-trip-details.png" 
     alt="project screens activities" 
