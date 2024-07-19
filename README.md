@@ -1,4 +1,4 @@
-<div align="center" id="top" style="display: flex">
+<div id="top" style="display: flex">
   <img 
     src="mobile-app/assets/images/project-cover-new-trip.png" 
     alt="project screens new trip" 
@@ -9,8 +9,11 @@
     alt="project screens activities" 
   />
 </div>
-
-
+<div>
+  <img 
+    src="mobile-app/assets/images/project-cover-trip-details.png" 
+    alt="project screens activities" 
+  />
 </div>
 
 <div align="center">
